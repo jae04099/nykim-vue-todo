@@ -7,8 +7,6 @@
 </div>
 </template>
 <script>
-import getDate from '../assets/commonJS/getDate'
-
 export default {
     data(){
         return {
@@ -18,13 +16,7 @@ export default {
     methods: {
         addTodoItem(){
             if(this.newTodoItem !== ''){
-                let value = {
-                    item: this.newTodoItem,
-                    date: `${getDate().date} / ${getDate().week}`,
-                    time: getDate().time,
-                    completed: false
-                }
-            localStorage.setItem(this.newTodoItem, JSON.stringify(value))
+            this.$emit("addItem", this.newTodoItem)
             this.clearInput()
             }
         },

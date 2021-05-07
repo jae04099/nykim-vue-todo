@@ -2,31 +2,63 @@
   <div id="app">
       <TodoHeader />
         <TodoTitle />
-        <TodoInput/>
+        <TodoInput @addItem="addOneItem"/>
         <TodoController />
-        <TodoList />
+        <TodoList :propsdata = "todoItems"/>
       <TodoFooter />
   </div>
 </template>
 
 <script>
-import TodoHeader from "./components/TodoHeader"
-import TodoTitle from "./components/TodoTitle"
+
 import TodoInput from "./components/TodoInput"
+import getDate from "./assets/commonJS/getDate"
+import TodoTitle from "./components/TodoTitle"
+import TodoHeader from "./components/TodoHeader"
 import TodoController from "./components/TodoController"
-import TodoList from "./components/TodoList"
 import TodoFooter from "./components/TodoFooter"
+import TodoList from "./components/TodoList"
+
 
 
 export default {
   name: "App",
+  data(){
+    return{
+      todoItems: []
+    }
+  },
   components: {
-    TodoHeader,
-    TodoTitle,
     TodoInput,
+    TodoTitle,
+    TodoHeader,
     TodoController,
+    TodoFooter,
     TodoList,
-    TodoFooter
+
+  },
+  created(){
+    if(localStorage.length > 0){
+      for (let i = 0; i < localStorage.length ; i++){
+        if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
+          this.todoItems.push(
+            JSON.parse(localStorage.getItem(localStorage.key(i)))
+          )
+        }
+      }
+    }
+  },
+  methods: {
+    addOneItem(todoItem){
+      let value ={
+        item: todoItem,
+        date: `${getDate().date} ${getDate().week}`,
+        time: getDate().time,
+        completed: false
+      }
+      localStorage.setItem(todoItem, JSON.stringify(value))
+      this.todoItems.push(value)
+    }
   }
 }
 </script>

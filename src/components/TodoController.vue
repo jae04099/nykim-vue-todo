@@ -9,9 +9,18 @@
         <option value="name-desc">Name Descending</option>
       </select>
     </div>
-    <button class="clear">Clear All</button>
+    <button class="clear" @click="removeAll()">Clear All</button>
   </div>
 </template>
+<script>
+export default {
+    methods: {
+        removeAll(){
+            localStorage.clear();
+        }
+    }
+}
+</script>
 <style lang="scss">
 .controller {
   max-width: $max-width;
