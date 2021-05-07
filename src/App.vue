@@ -1,32 +1,33 @@
 <template>
   <div id="app">
-      <TodoHeader />
-        <TodoTitle />
-        <TodoInput @addItem="addOneItem"/>
-        <TodoController />
-        <TodoList :propsdata = "todoItems"/>
-      <TodoFooter />
+    <TodoHeader />
+    <TodoTitle />
+    <TodoInput @addItem="addOneItem" />
+    <TodoController />
+    <TodoList
+      :propsdata="todoItems"
+      @toggleItem="toggleComplete"
+      @removeItem="removeTodo"
+    />
+    <TodoFooter />
   </div>
 </template>
 
 <script>
-
-import TodoInput from "./components/TodoInput"
-import getDate from "./assets/commonJS/getDate"
-import TodoTitle from "./components/TodoTitle"
-import TodoHeader from "./components/TodoHeader"
-import TodoController from "./components/TodoController"
-import TodoFooter from "./components/TodoFooter"
-import TodoList from "./components/TodoList"
-
-
+import TodoInput from "./components/TodoInput";
+import getDate from "./assets/commonJS/getDate";
+import TodoTitle from "./components/TodoTitle";
+import TodoHeader from "./components/TodoHeader";
+import TodoController from "./components/TodoController";
+import TodoFooter from "./components/TodoFooter";
+import TodoList from "./components/TodoList";
 
 export default {
   name: "App",
-  data(){
-    return{
-      todoItems: []
-    }
+  data() {
+    return {
+      todoItems: [],
+    };
   },
   components: {
     TodoInput,
@@ -35,32 +36,39 @@ export default {
     TodoController,
     TodoFooter,
     TodoList,
-
   },
-  created(){
-    if(localStorage.length > 0){
-      for (let i = 0; i < localStorage.length ; i++){
-        if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
+  created() {
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
           this.todoItems.push(
             JSON.parse(localStorage.getItem(localStorage.key(i)))
-          )
+          );
         }
       }
     }
   },
   methods: {
-    addOneItem(todoItem){
-      let value ={
+    addOneItem(todoItem) {
+      let value = {
         item: todoItem,
         date: `${getDate().date} ${getDate().week}`,
         time: getDate().time,
-        completed: false
-      }
-      localStorage.setItem(todoItem, JSON.stringify(value))
-      this.todoItems.push(value)
-    }
-  }
-}
+        completed: false,
+      };
+      localStorage.setItem(todoItem, JSON.stringify(value));
+      this.todoItems.push(value);
+    },
+    removeTodo(todoItem, index) {
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+    },
+    toggleComplete(todoItem) {
+      todoItem.completed = !todoItem.completed;
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+  },
+};
 </script>
 <style lang="scss">
 @import "@/assets/style/_reset.scss";

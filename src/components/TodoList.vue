@@ -2,7 +2,7 @@
   <ul class="list">
     <li
       class="list__item"
-      v-for="(todoItem, index) in todoItems"
+      v-for="(todoItem, index) in propsdata"
       :key="todoItem.item"
     >
       <input
@@ -22,25 +22,13 @@
 </template>
 <script>
 export default {
-    props: [
-        'propsdata'
-    ],
-  data() {
-    return {
-      todoItems: [],
-    };
-  },
-  created() {
-      this.todoItems = this.propsdata
-  },
+  props: ["propsdata"],
   methods: {
     toggleComplete(todoItem) {
-      todoItem.completed = !todoItem.completed;
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+      this.$emit("toggleItem", todoItem);
     },
     removeTodo(todoItem, index) {
-      localStorage.removeItem(todoItem.item);
-      this.todoItems.splice(index, 1);
+      this.$emit("removeItem", todoItem, index);
     },
   },
 };
