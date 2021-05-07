@@ -1,8 +1,6 @@
 <template>
-    <div></div>
+<div class="add">
+    <input type="text" class="add__input" placeholder="enter your task" />
+    <button class="add__button">Add</button>
+</div>
 </template>
-<script>
-export default {
-    name: 'TodoInput'
-}
-</script>

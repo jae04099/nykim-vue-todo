@@ -1,8 +1,3 @@
 <template>
-    <div></div>
+  <footer>Made by Lena Lee</footer>
 </template>
-<script>
-export default {
-    name: 'TodoFooter'
-}
-</script>
