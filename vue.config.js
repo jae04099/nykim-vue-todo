@@ -5,7 +5,7 @@ module.exports = {
     css: {
       sourceMap: true,
       loaderOptions: {
-        scss: {
+        sass: {
           prependData: `
             @import "~@/assets/style/_mixins.scss";
             @import "~@/assets/style/_variables.scss";

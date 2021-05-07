@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <TodoHeader />
-    <TodoTitle />
-    <TodoInput />
-    <TodoController />
-    <TodoList />
-    <TodoFooter />
+      <TodoHeader />
+        <TodoTitle />
+        <TodoInput/>
+        <TodoController />
+        <TodoList />
+      <TodoFooter />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "./assets/style/_reset";
+@import "@/assets/style/_reset.scss";
 .top {
   width: 100%;
   min-height: 43.6rem;

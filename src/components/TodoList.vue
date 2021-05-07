@@ -1,15 +1,55 @@
 <template>
-    <ul class="list">
-        <li class="list__item">
-            <input type="checkbox" id="list-item-1" />
-            <label for="list-item-1">
-                <p class="list__text">smile!:)</p>
-            </label>
-            <p class="list__date">5/26</p>
-            <button class="list__delete">Delete</button>
-        </li>
-    </ul>
+  <ul class="list">
+    <li
+      class="list__item"
+      v-for="(todoItem, index) in todoItems"
+      :key="todoItem.item"
+    >
+      <input
+        type="checkbox"
+        :id="todoItem.item"
+        :checked="todoItem.completed === true"
+        :change="toggleComplete(todoItem, index)"
+      />
+      <label :for="todoItem.item" class="list__label">
+        <p class="list__text">{{ todoItem.item }}</p>
+      </label>
+      <button class="list__delete" @click="removeTodo(todoItem, index)">
+        <div class="blind">delete</div>
+      </button>
+    </li>
+  </ul>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      todoItems: [],
+    };
+  },
+  created() {
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) !== "loglevel:webpack-dev-server") {
+          this.todoItems.push(
+            JSON.parse(localStorage.getItem(localStorage.key(i)))
+          );
+        }
+      }
+    }
+  },
+  methods: {
+    toggleComplete(todoItem) {
+      todoItem.completed = !todoItem.completed;
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    removeTodo(todoItem, index) {
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+    },
+  },
+};
+</script>
 <style lang="scss">
 .list {
   position: relative;
