@@ -1,23 +1,29 @@
 <template>
   <div class="controller">
     <div class="select">
-      <label for="order">Order</label>
-      <select name="order" id="order" class="selectbox">
-        <option value="date-asc">Date Ascending</option>
-        <option value="date-desc">Date Descending</option>
-        <option value="name-asc">Name Ascending</option>
-        <option value="name-desc">Name Descending</option>
+      <label for="order" class="blind">Order</label>
+      <select name="order" id="order" class="selectbox" v-model="selected" @change="sortTodo">
+          <option value="date-asc">Oldest</option>
+          <option value="date-desc">Latest</option>
       </select>
     </div>
-    <button class="clear" @click="removeAll()">Clear All</button>
+    <button class="clear" @click="clearTodo">Clear All</button>
   </div>
 </template>
 <script>
 export default {
-    methods: {
-        removeAll(){
-            localStorage.clear();
+    data(){
+        return {
+            selected: "date-asc"
         }
+    },
+    methods: {
+       sortTodo(){
+           this.$emit("sortItem", {value: this.selected});
+       },
+       clearTodo(){
+           this.$emit("removeAll")
+       }
     }
 }
 </script>

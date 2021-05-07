@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <TodoHeader />
-    <TodoTitle />
+    <TodoTitle :propsdata="checkCount" />
     <TodoInput @addItem="addOneItem" />
-    <TodoController />
+    <TodoController @removeAll="removeAll" @sortItem="sortAllItem" @clearAll="clearAllItem"/>
     <TodoList
       :propsdata="todoItems"
       @toggleItem="toggleComplete"
@@ -48,6 +48,24 @@ export default {
       }
     }
   },
+  computed: {
+    checkCount() {
+      const checkLeftItems = () => {
+        let leftCount = 0;
+        for (let i = 0; i < this.todoItems.length; i++) {
+          if (this.todoItems[i].completed === false) {
+            leftCount++;
+          }
+        }
+        return leftCount;
+      };
+      const count = {
+        total: this.todoItems.length,
+        left: checkLeftItems(),
+      };
+      return count;
+    },
+  },
   methods: {
     addOneItem(todoItem) {
       let value = {
@@ -67,6 +85,30 @@ export default {
       todoItem.completed = !todoItem.completed;
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
     },
+    removeAll() {
+      this.todoItems = [];
+      localStorage.clear();
+    },
+    sortTodoLatest(){
+      this.todoItems.sort(function(a, b){
+        return b.time - a.time;
+      })
+    },
+    sortTodoOldest(){
+      this.todoItems.sort(function(a, b){
+        return a.time - b.time
+      })
+    },
+    sortAllItem(selectedSort){
+      if(selectedSort.value === "date-desc"){
+        this.sortTodoLatest();
+      }else if(selectedSort.value === "date-asc"){
+        this.sortTodoOldest();
+      }
+    },
+    mounted(){
+      this.sortTodoOldest()
+    }
   },
 };
 </script>
